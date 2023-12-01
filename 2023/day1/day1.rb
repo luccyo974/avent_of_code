@@ -1,3 +1,4 @@
+require 'benchmark'
 class Day1
 
     attr_accessor :lines, :calibration_sum, :numbers
@@ -12,26 +13,23 @@ class Day1
         
         lines.each do |l|
             scan_res = l.scan(/(?=(\d|one|two|three|four|five|six|seven|eight|nine))/).flatten
-            digits = process_numbers(scan_res)
-            calibration_value =  "#{digits.first}#{digits.last}".to_i
+            calibration_value =  "#{process_numbers(scan_res.first)}#{process_numbers(scan_res.last)}".to_i
             self.calibration_sum += calibration_value
         end;
         puts calibration_sum
     end
 
-    def process_numbers(digits)
+    def process_numbers(d)
         n = ["one","two","three","four","five","six","seven","eight","nine"]
-        processed_digits = []
-        digits.each do |d|
-            if n.include?(d)
-                processed_digits << n.find_index(d)+1
-            else
-                processed_digits << d
-            end
+        if n.include?(d)
+            return n.find_index(d)+1
+        else
+            return d
         end
-        processed_digits
     end
-
 end
 
-Day1.new.first_puzzle
+duration = Benchmark.realtime do 
+    Day1.new.first_puzzle
+end
+puts duration
