@@ -1,7 +1,7 @@
 require 'benchmark'
 class Day2
 
-    attr_accessor :lines, :calibration_sum, :numbers
+    attr_accessor :lines
     
     
     def initialize
