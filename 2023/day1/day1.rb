@@ -10,7 +10,15 @@ class Day1
     end
 
     def first_puzzle
-        
+        lines.each do |l|
+            scan_res = l.scan(/(?=(\d))/).flatten
+            calibration_value =  "#{scan_res.first}#{scan_res.last}".to_i
+            self.calibration_sum += calibration_value
+        end;
+        puts calibration_sum
+    end
+
+    def second_puzzle
         lines.each do |l|
             scan_res = l.scan(/(?=(\d|one|two|three|four|five|six|seven|eight|nine))/).flatten
             calibration_value =  "#{process_numbers(scan_res.first)}#{process_numbers(scan_res.last)}".to_i
@@ -31,5 +39,6 @@ end
 
 duration = Benchmark.realtime do 
     Day1.new.first_puzzle
+    Day1.new.second_puzzle
 end
 puts duration

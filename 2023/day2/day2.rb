@@ -36,7 +36,8 @@ class Day2
 end
 
 duration = Benchmark.realtime do 
-    puts Day2.new.first_puzzle
-    puts Day2.new.second_puzzle
+    d = Day2.new
+    puts d.first_puzzle
+    puts d.second_puzzle
 end
-puts duration
+puts duration * 1000
