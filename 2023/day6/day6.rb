@@ -4,16 +4,18 @@ class Day6
     
     def initialize
         time_str, dist_str = File.read("input.txt").split("\n")
-        @races = compute_races(time_str, dist_str)
-        @last_race = Race.new(time_str.scan(/\d+/).join.to_i, dist_str.scan(/\d+/).join.to_i)
+        times = time_str.scan(/\d+/)
+        dists = dist_str.scan(/\d+/)
+        @races = compute_races(times, dists)
+        @last_race = Race.new(times.join.to_i, dists.join.to_i)
     end
 
-    def compute_races(time_str, dist_str)
-        times = time_str.scan(/\d+/).map(&:to_i)
-        dist = dist_str.scan(/\d+/).map(&:to_i)
+    def compute_races(times, dists)
+        times = times.map(&:to_i)
+        dists = dists.map(&:to_i)
         races = []
         times.each_with_index do | t, i |
-            r = Race.new(t, dist[i])
+            r = Race.new(t, dists[i])
             races << r
         end
         races
@@ -22,28 +24,25 @@ class Day6
     def first_puzzle
         num_win = []
         @races.each do |r|
-            (0..r.time).each do |run|
-                dist_run = run * (r.time - run)
-                if dist_run > r.dist
-                    num_win << ((r.time + 1) - (run * 2))
-                    break
-                end
-            end
+            num_win << run(r)
         end
         num_win.inject(:*)
     end
 
     def second_puzzle
-        num_win = 0
-        r = @last_race
+        run(@last_race)
+    end
+
+    def run(r)
+        res = 0
         (0..r.time).each do |run|
             dist_run = run * (r.time - run)
             if dist_run > r.dist
-                num_win = ((r.time + 1) - (run * 2))
+                res = ((r.time + 1) - (run * 2))
                 break
             end
         end
-        num_win
+        res
     end
 end
 
