@@ -2,8 +2,8 @@ require 'benchmark'
 KINDS = ["five-of-a-kind", "four-of-a-kind", "full-house", "three-of-a-kind", "two-pairs", "one_pair", "high_card"]
 STRENGTH = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"]
 STRENGTH_2 = ["A", "K", "Q", "T", "9", "8", "7", "6", "5", "4", "3", "2", "J"]
+
 class Day7
-    include Comparable
 
     def initialize(part = 1)
         lines = File.read("input.txt").split("\n").map{|l| l.split(" ")}
@@ -39,6 +39,7 @@ class Day7
 end
 
 class Hand
+    include Comparable
     attr_accessor :cards, :kind, :bid, :part
 
     def initialize(part, cards, bid)
@@ -58,8 +59,7 @@ class Hand
             h = cards.each_char.with_object(Hash.new(0)) {|c, m| m[c]+=1}
             full_hash = h
             j_count = h.delete("J")
-            max_value_keys = h.select {|k,v| v == h.values.max }.keys
-            max_key = max_value_keys.count == 1 ? max_value_keys.first : max_value_keys.sort{|a,b| STRENGTH_2.index(b) <=> STRENGTH_2.index(a)}.first
+            max_key = h.invert.max&.last
             full_hash[max_key] += j_count
             cf = full_hash.values
             get_kind(cf)
@@ -96,8 +96,7 @@ class Hand
             break unless compare == 0
         end
         compare
-    end
-    
+    end 
 end
 
 duration = Benchmark.realtime do 
