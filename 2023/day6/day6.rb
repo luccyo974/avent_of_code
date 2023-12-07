@@ -35,10 +35,10 @@ class Day6
 
     def run(r)
         res = 0
-        (0..r.time).each do |run|
-            dist_run = run * (r.time - run)
+        (0..r.time).each do |push|
+            dist_run = push * (r.time - push)
             if dist_run > r.dist
-                res = ((r.time + 1) - (run * 2))
+                res = ((r.time + 1) - (push * 2))
                 break
             end
         end
