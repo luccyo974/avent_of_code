@@ -5,7 +5,7 @@ class Day10
     attr_accessor :lines, :pipeline
     
     def initialize
-        self.lines = File.read("input.txt").split("\n").map(&:chars)
+        self.lines = File.read("input_test_2.txt").split("\n").map(&:chars)
     end
     
     def first_puzzle
@@ -105,6 +105,7 @@ class Day10
         
     def second_puzzle
         off_pipes = get_off_pipes
+        puts "in pipe : #{pipeline.count} / off pipe : #{off_pipes.count}"
         # find which one of those are inside .......
     end
 
@@ -112,7 +113,8 @@ class Day10
         off_pipes = []
         lines.each_with_index do |l, y|
             l.each_with_index do |c, x|
-                if pipeline.detect{|p| p.x == x && p.y == y && c == p.char}.nil?
+                found_p = pipeline.detect{|p| p.x == x && p.y == y && c == p.char}
+                if found_p.nil?
                     off_p = Pipe.new(c, x, y)
                     off_pipes << off_p
                 end
